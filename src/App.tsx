@@ -1,25 +1,77 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useEffect, useState } from "react";
+import ToDoList from "./ToDoList/ToDoList";
+import AddTodoItemInput from "./AddTodoItemInput/AddTodoItemInput";
+import { getItemsFromCache } from "./utils";
+import { TodoItem } from "./types";
 
 function App() {
+  const [value, setValue] = useState("");
+
+  const [todoItems, setTodoItems] = useState<TodoItem[]>(
+    getItemsFromCache() || []
+  );
+
+  useEffect(() => {
+    localStorage.setItem("items", JSON.stringify(todoItems));
+  }, [todoItems]);
+
+  function handleInputChange(value: string) {
+    setValue(value);
+  }
+
+  function toggleTodoItem(id: number) {
+    const newTodoItems = todoItems.map((item) => {
+      if (item.id === id) item.completed = !item.completed;
+      return item;
+    });
+
+    setTodoItems(newTodoItems);
+  }
+
+  function addTodoItem(value: string) {
+    if (value === "") return;
+
+    const hasDuplicate = todoItems.some((item) => item.description === value);
+
+    if (hasDuplicate) {
+      alert(`You can't add task with the same name`);
+      return;
+    }
+
+    const newItem: TodoItem = {
+      id: Date.now(),
+      description: value,
+      completed: false,
+    };
+
+    setTodoItems([...todoItems, newItem]);
+    setValue("");
+  }
+
+  function deleteTodoItem(id: number) {
+    setTodoItems(todoItems.filter((item) => item.id !== id));
+  }
+
+  function handleClickOnTodoItem(id: number) {
+    const index = todoItems.map((item) => item.id).indexOf(id);
+    alert(todoItems[index].description);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <AddTodoItemInput
+        value={value}
+        onInputChange={handleInputChange}
+        onTodoItemAdd={addTodoItem}
+      />
+      <ToDoList
+        items={todoItems}
+        onClick={handleClickOnTodoItem}
+        onToggle={toggleTodoItem}
+        onDelete={deleteTodoItem}
+      />
+    </>
   );
 }
 
