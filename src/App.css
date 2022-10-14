@@ -12,5 +12,13 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: left;
+}
+
+.container {
+  height: 100%;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: left;
   row-gap: 1rem;
 }

@@ -4,7 +4,7 @@ import ToDoList from "./ToDoList/ToDoList";
 import AddTodoItemInput from "./AddTodoItemInput/AddTodoItemInput";
 import { getItemsFromCache } from "./utils";
 import { TodoItem } from "./types";
-
+import { Container } from "@mui/system";
 function App() {
   const [value, setValue] = useState("");
 
@@ -59,7 +59,7 @@ function App() {
   }
 
   return (
-    <>
+    <Container className="container" maxWidth="sm" sx={{ pt: 4, pb: 4 }}>
       <AddTodoItemInput
         value={value}
         onInputChange={handleInputChange}
@@ -71,7 +71,7 @@ function App() {
         onToggle={toggleTodoItem}
         onDelete={deleteTodoItem}
       />
-    </>
+    </Container>
   );
 }
 
