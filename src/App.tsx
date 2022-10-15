@@ -59,7 +59,17 @@ function App() {
   }
 
   return (
-    <Container className="container" maxWidth="sm" sx={{ pt: 4, pb: 4 }}>
+    <Container
+      maxWidth="sm"
+      sx={{
+        pt: 4,
+        pb: 4,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        rowGap: "1rem",
+      }}
+    >
       <AddTodoItemInput
         value={value}
         onInputChange={handleInputChange}
