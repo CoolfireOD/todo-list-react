@@ -3,6 +3,8 @@ import "./ToDoItem.css";
 import classNames from "classnames";
 import Checkbox from "@mui/material/Checkbox";
 import { Button } from "@mui/material";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import Box from "@mui/material/Box";
 
 interface ToDoItemProps {
   description: string;
@@ -24,15 +26,23 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
   });
   return (
     <div className="todo-item">
-      <p onClick={onClick} className={classes}>
-        {description}
-      </p>
-      <Checkbox
-        color="info"
-        className="todo-item__input"
-        checked={completed}
-        onChange={onToggle}
-      />
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          columnGap: ".5rem",
+        }}
+      >
+        <Checkbox
+          color="info"
+          className="todo-item__input"
+          checked={completed}
+          onChange={onToggle}
+        />
+        <p onClick={onClick} className={classes}>
+          {description}
+        </p>
+      </Box>
       <Button
         variant="contained"
         className="todo-item__delete-btn"
@@ -40,7 +50,7 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
           setTimeout(onDelete, 100);
         }}
       >
-        del
+        <MoreHorizIcon />
       </Button>
     </div>
   );

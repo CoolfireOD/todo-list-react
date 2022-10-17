@@ -3,10 +3,12 @@
     column-gap: .5rem;
     align-items: center;
     font-size: 18px;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .todo-item__description {
-    text-align: center;
+    text-align: left;
     padding-bottom: 0.2rem;
 }
 
