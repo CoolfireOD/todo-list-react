@@ -34,6 +34,7 @@ const AddTodoItemInput: React.FC<AddTodoItemInputProps> = ({
           id="standard-basic"
           label="Task name"
           variant="standard"
+          inputProps={{ maxLength: 40 }}
           value={value}
           onChange={handleChange}
         />
