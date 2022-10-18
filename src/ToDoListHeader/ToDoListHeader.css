@@ -1,0 +1,8 @@
+.header__copy-link {
+    padding-top: .25rem;
+    cursor: pointer;
+}
+
+.header__title{
+    margin: 0;
+}
