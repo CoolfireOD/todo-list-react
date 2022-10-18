@@ -1,5 +1,6 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
+import ToDoListHeader from "./ToDoListHeader/ToDoListHeader";
 import ToDoList from "./ToDoList/ToDoList";
 import AddTodoItemInput from "./AddTodoItemInput/AddTodoItemInput";
 import { getItemsFromCache } from "./utils";
@@ -55,7 +56,7 @@ function App() {
 
   function handleClickOnTodoItem(id: number) {
     const index = todoItems.map((item) => item.id).indexOf(id);
-    alert(todoItems[index].description);
+    alert(todoItems[index].description.length);
   }
 
   return (
@@ -70,6 +71,7 @@ function App() {
         rowGap: "1rem",
       }}
     >
+      <ToDoListHeader textToCopy="link-copy" />
       <AddTodoItemInput
         value={value}
         onInputChange={handleInputChange}
