@@ -21,14 +21,15 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
 }) => {
   const classes = classNames("todo-item__description", {
     _completed: completed,
-  });
+  }); //todo: use "sx" property instead of classNames + remove 'classnames' node module from package.json
+
   return (
     <div className="todo-item">
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
-          columnGap: ".5rem",
+          columnGap: 1,
         }}
       >
         <Checkbox
@@ -42,9 +43,7 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
       <Button
         variant="contained"
         className="todo-item__delete-btn"
-        onClick={() => {
-          setTimeout(onDelete, 100);
-        }}
+        onClick={onDelete}
       >
         <MoreHorizIcon />
       </Button>

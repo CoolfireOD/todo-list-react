@@ -7,7 +7,7 @@ type AddTodoItemInputProps = {
   onInputChange: (value: string) => void;
   onTodoItemAdd: () => void;
   value: string;
-}
+};
 
 const AddTodoItemInput: React.FC<AddTodoItemInputProps> = ({
   onInputChange,
@@ -19,7 +19,7 @@ const AddTodoItemInput: React.FC<AddTodoItemInputProps> = ({
   }
 
   return (
-      //todo: use sx instead of classNames
+    //todo: use sx instead of classNames
     <div className="add-todo-item">
       <div className="add-todo-item__input-wrapper input-wrapper">
         <TextField
