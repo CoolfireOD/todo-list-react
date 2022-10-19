@@ -3,13 +3,9 @@ import "./ToDoListHeader.css";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import Box from "@mui/material/Box";
 
-interface ToDoListHeaderProps {
-  textToCopy: string;
-}
-
-const ToDoListHeader: React.FC<ToDoListHeaderProps> = ({ textToCopy }) => {
+const ToDoListHeader: React.FC = () => {
   function handleClick() {
-    navigator.clipboard.writeText(textToCopy);
+    navigator.clipboard.writeText(window.location.href);
   }
 
   return (
@@ -23,10 +19,7 @@ const ToDoListHeader: React.FC<ToDoListHeaderProps> = ({ textToCopy }) => {
       }}
     >
       <h2 className="header__title">My to-do list</h2>
-      <InsertLinkIcon
-        className="header__copy-link"
-        onClick={handleClick}
-      ></InsertLinkIcon>
+      <InsertLinkIcon className="header__copy-link" onClick={handleClick} />
     </Box>
   );
 };

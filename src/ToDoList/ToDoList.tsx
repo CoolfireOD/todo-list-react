@@ -5,17 +5,11 @@ import { TodoItem } from "../types";
 
 interface ToDoListProps {
   items: TodoItem[];
-  onClick: (id: number) => void;
   onDelete: (id: number) => void;
   onToggle: (id: number) => void;
 }
 
-const ToDoList: React.FC<ToDoListProps> = ({
-  items,
-  onClick,
-  onDelete,
-  onToggle,
-}) => {
+const ToDoList: React.FC<ToDoListProps> = ({ items, onDelete, onToggle }) => {
   return (
     <div className="items">
       {items.map((item) => (
@@ -23,7 +17,6 @@ const ToDoList: React.FC<ToDoListProps> = ({
           key={item.id}
           description={item.description}
           completed={item.completed}
-          onClick={() => onClick(item.id)}
           onToggle={() => onToggle(item.id)}
           onDelete={() => onDelete(item.id)}
         />

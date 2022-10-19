@@ -11,7 +11,6 @@ interface ToDoItemProps {
   completed: boolean;
   onToggle: () => void;
   onDelete: () => void;
-  onClick: () => void;
 }
 
 const ToDoItem: React.FC<ToDoItemProps> = ({
@@ -19,7 +18,6 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
   completed,
   onToggle,
   onDelete,
-  onClick,
 }) => {
   const classes = classNames("todo-item__description", {
     _completed: completed,
@@ -39,9 +37,7 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
           checked={completed}
           onChange={onToggle}
         />
-        <p onClick={onClick} className={classes}>
-          {description}
-        </p>
+        <p className={classes}>{description}</p>
       </Box>
       <Button
         variant="contained"
