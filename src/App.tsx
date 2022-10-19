@@ -5,9 +5,9 @@ import AddTodoItemInput from "./AddTodoItemInput/AddTodoItemInput";
 import { getItemsFromCache } from "./utils";
 import { TodoItem } from "./types";
 import { Container } from "@mui/system";
+
 function App() {
   const [value, setValue] = useState("");
-
   const [todoItems, setTodoItems] = useState<TodoItem[]>(
     getItemsFromCache() || []
   );
@@ -16,21 +16,18 @@ function App() {
     localStorage.setItem("items", JSON.stringify(todoItems));
   }, [todoItems]);
 
-  function handleInputChange(value: string) {
-    setValue(value);
-  }
-
   function toggleTodoItem(id: number) {
-    const newTodoItems = todoItems.map((item) => {
-      if (item.id === id) item.completed = !item.completed;
-      return item;
-    });
+    setTodoItems((prevTodoItems) =>
+      prevTodoItems.map((item) => {
+        if (item.id === id) item.completed = !item.completed;
 
-    setTodoItems(newTodoItems);
+        return item;
+      })
+    );
   }
 
   function addTodoItem(value: string) {
-    if (value === "") return;
+    if (value.trim() === "") return;
 
     const hasDuplicate = todoItems.some((item) => item.description === value);
 
@@ -50,12 +47,9 @@ function App() {
   }
 
   function deleteTodoItem(id: number) {
-    setTodoItems(todoItems.filter((item) => item.id !== id));
-  }
-
-  function handleClickOnTodoItem(id: number) {
-    const index = todoItems.map((item) => item.id).indexOf(id);
-    alert(todoItems[index].description.length);
+    setTodoItems((prevTodoItems) =>
+      prevTodoItems.filter((item) => item.id !== id)
+    );
   }
 
   return (
@@ -66,19 +60,17 @@ function App() {
         pb: 4,
         display: "flex",
         flexDirection: "column",
-        alignItems: "flex-start",
-        rowGap: "1rem",
+        rowGap: 2,
       }}
     >
-      <ToDoListHeader textToCopy="link-copy" />
+      <ToDoListHeader />
       <AddTodoItemInput
         value={value}
-        onInputChange={handleInputChange}
+        onInputChange={setValue}
         onTodoItemAdd={addTodoItem}
       />
       <ToDoList
         items={todoItems}
-        onClick={handleClickOnTodoItem}
         onToggle={toggleTodoItem}
         onDelete={deleteTodoItem}
       />
