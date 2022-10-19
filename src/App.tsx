@@ -27,7 +27,7 @@ function App() {
     );
   }
 
-  function addTodoItem(value: string) {
+  function addTodoItem() {
     if (value.trim() === "") return;
 
     const hasDuplicate = todoItems.some((item) => item.description === value);
