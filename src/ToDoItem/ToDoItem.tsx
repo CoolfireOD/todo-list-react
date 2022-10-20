@@ -1,13 +1,15 @@
 import React from "react";
-import "./ToDoItem.css";
-import classNames from "classnames";
+import Checkbox from "@mui/material/Checkbox";
+import { Button, Typography, IconButton } from "@mui/material";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import Box from "@mui/material/Box";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface ToDoItemProps {
   description: string;
   completed: boolean;
   onToggle: () => void;
   onDelete: () => void;
-  onClick: () => void;
 }
 
 const ToDoItem: React.FC<ToDoItemProps> = ({
@@ -15,31 +17,50 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
   completed,
   onToggle,
   onDelete,
-  onClick,
 }) => {
-  const classes = classNames("todo-item__description", {
-    _completed: completed,
-  });
+  //todo: use "sx" property instead of classNames + remove 'classnames' node module from package.json
   return (
-    <div className="todo-item">
-      <p onClick={onClick} className={classes}>
-        {description}
-      </p>
-      <input
-        type="checkbox"
-        className="todo-item__input"
-        checked={completed}
-        onChange={onToggle}
-      />
-      <button
-        className="todo-item__delete-btn"
-        onClick={() => {
-          setTimeout(onDelete, 100);
+    <Box
+      sx={{
+        display: "flex",
+        columnGap: 2,
+        alignItems: "center",
+        fontSize: "18px",
+        width: "100%",
+        justifyContent: "space-between",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          columnGap: 1,
         }}
       >
-        del
-      </button>
-    </div>
+        <Checkbox
+          color="info"
+          checked={completed}
+          onChange={onToggle}
+          sx={{
+            height: "20px",
+            width: "20px",
+          }}
+        />
+        <Typography
+          sx={{
+            textAlign: "left",
+            wordBreak: "break-word",
+            position: "relative",
+            textDecoration: completed ? "line-through" : "",
+          }}
+        >
+          {description}
+        </Typography>
+      </Box>
+      <IconButton onClick={onDelete}>
+        <DeleteIcon />
+      </IconButton>
+    </Box>
   );
 };
 

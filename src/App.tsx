@@ -1,13 +1,14 @@
-import "./App.css";
 import React, { useEffect, useState } from "react";
+import ToDoListHeader from "./ToDoListHeader/ToDoListHeader";
 import ToDoList from "./ToDoList/ToDoList";
 import AddTodoItemInput from "./AddTodoItemInput/AddTodoItemInput";
 import { getItemsFromCache } from "./utils";
 import { TodoItem } from "./types";
+import { Container } from "@mui/system";
+import { CssBaseline } from "@mui/material";
 
 function App() {
   const [value, setValue] = useState("");
-
   const [todoItems, setTodoItems] = useState<TodoItem[]>(
     getItemsFromCache() || []
   );
@@ -16,21 +17,18 @@ function App() {
     localStorage.setItem("items", JSON.stringify(todoItems));
   }, [todoItems]);
 
-  function handleInputChange(value: string) {
-    setValue(value);
-  }
-
   function toggleTodoItem(id: number) {
-    const newTodoItems = todoItems.map((item) => {
-      if (item.id === id) item.completed = !item.completed;
-      return item;
-    });
+    setTodoItems((prevTodoItems) =>
+      prevTodoItems.map((item) => {
+        if (item.id === id) item.completed = !item.completed;
 
-    setTodoItems(newTodoItems);
+        return item;
+      })
+    );
   }
 
-  function addTodoItem(value: string) {
-    if (value === "") return;
+  function addTodoItem() {
+    if (value.trim() === "") return;
 
     const hasDuplicate = todoItems.some((item) => item.description === value);
 
@@ -50,27 +48,36 @@ function App() {
   }
 
   function deleteTodoItem(id: number) {
-    setTodoItems(todoItems.filter((item) => item.id !== id));
-  }
-
-  function handleClickOnTodoItem(id: number) {
-    const index = todoItems.map((item) => item.id).indexOf(id);
-    alert(todoItems[index].description);
+    setTodoItems((prevTodoItems) =>
+      prevTodoItems.filter((item) => item.id !== id)
+    );
   }
 
   return (
     <>
-      <AddTodoItemInput
-        value={value}
-        onInputChange={handleInputChange}
-        onTodoItemAdd={addTodoItem}
-      />
-      <ToDoList
-        items={todoItems}
-        onClick={handleClickOnTodoItem}
-        onToggle={toggleTodoItem}
-        onDelete={deleteTodoItem}
-      />
+      <CssBaseline />
+      <Container
+        maxWidth="sm"
+        sx={{
+          pt: 4,
+          pb: 4,
+          display: "flex",
+          flexDirection: "column",
+          rowGap: 2,
+        }}
+      >
+        <ToDoListHeader />
+        <AddTodoItemInput
+          value={value}
+          onInputChange={setValue}
+          onTodoItemAdd={addTodoItem}
+        />
+        <ToDoList
+          items={todoItems}
+          onToggle={toggleTodoItem}
+          onDelete={deleteTodoItem}
+        />
+      </Container>
     </>
   );
 }
