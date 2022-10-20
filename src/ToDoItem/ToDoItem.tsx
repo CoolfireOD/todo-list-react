@@ -1,8 +1,9 @@
 import React from "react";
 import Checkbox from "@mui/material/Checkbox";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, IconButton } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Box from "@mui/material/Box";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface ToDoItemProps {
   description: string;
@@ -56,16 +57,9 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
           {description}
         </Typography>
       </Box>
-      <Button
-        variant="contained"
-        onClick={onDelete}
-        sx={{
-          height: "25px",
-          width: "5rem",
-        }}
-      >
-        <MoreHorizIcon />
-      </Button>
+      <IconButton onClick={onDelete}>
+        <DeleteIcon />
+      </IconButton>
     </Box>
   );
 };
