@@ -1,6 +1,4 @@
 import React from "react";
-import "./ToDoItem.css";
-import classNames from "classnames";
 import Checkbox from "@mui/material/Checkbox";
 import { Button, Typography } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -19,12 +17,18 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
   onToggle,
   onDelete,
 }) => {
-  const classes = classNames("todo-item__description", {
-    _completed: completed,
-  }); //todo: use "sx" property instead of classNames + remove 'classnames' node module from package.json
-
+  //todo: use "sx" property instead of classNames + remove 'classnames' node module from package.json
   return (
-    <div className="todo-item">
+    <Box
+      sx={{
+        display: "flex",
+        columnGap: 2,
+        alignItems: "center",
+        fontSize: "18px",
+        width: "100%",
+        justifyContent: "space-between",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -34,22 +38,35 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
       >
         <Checkbox
           color="info"
-          className="todo-item__input"
           checked={completed}
           onChange={onToggle}
+          sx={{
+            height: "20px",
+            width: "20px",
+          }}
         />
-        <Typography className={classes} sx={{ wordBreak: "break-word" }}>
+        <Typography
+          sx={{
+            textAlign: "left",
+            wordBreak: "break-word",
+            position: "relative",
+            textDecoration: completed ? "line-through" : "",
+          }}
+        >
           {description}
         </Typography>
       </Box>
       <Button
         variant="contained"
-        className="todo-item__delete-btn"
         onClick={onDelete}
+        sx={{
+          height: "25px",
+          width: "5rem",
+        }}
       >
         <MoreHorizIcon />
       </Button>
-    </div>
+    </Box>
   );
 };
 
