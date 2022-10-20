@@ -2,7 +2,7 @@ import React from "react";
 import "./ToDoItem.css";
 import classNames from "classnames";
 import Checkbox from "@mui/material/Checkbox";
-import {Button, Typography} from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Box from "@mui/material/Box";
 
@@ -38,7 +38,9 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
           checked={completed}
           onChange={onToggle}
         />
-        <Typography className={classes} sx={{ wordBreak: 'break-word'}}>{description}</Typography>
+        <Typography className={classes} sx={{ wordBreak: "break-word" }}>
+          {description}
+        </Typography>
       </Box>
       <Button
         variant="contained"
