@@ -26,21 +26,18 @@ const AddTodoItemInput: React.FC<AddTodoItemInputProps> = ({
         alignItems: "flex-end",
       }}
     >
-        <TextField
-            onKeyUp={(event) => {
-                if (event.key === "Enter") onTodoItemAdd();
-            }}
-            label="Task name"
-            variant="standard"
-            inputProps={{ maxLength: 64 }}
-            value={value}
-            onChange={handleChange}
-            fullWidth
-        />
-      <Button
-        variant="contained"
-        onClick={onTodoItemAdd}
-      >
+      <TextField
+        onKeyUp={(event) => {
+          if (event.key === "Enter") onTodoItemAdd();
+        }}
+        label="Task name"
+        variant="standard"
+        inputProps={{ maxLength: 64 }}
+        value={value}
+        onChange={handleChange}
+        fullWidth
+      />
+      <Button variant="contained" onClick={onTodoItemAdd}>
         add
       </Button>
     </Box>
