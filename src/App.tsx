@@ -16,9 +16,8 @@ function App() {
   );
 
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-  const [mode, setMode] = useState<"light" | "dark">(
-    prefersDarkMode ? "dark" : "light"
-  );
+
+  const mode: "light" | "dark" = prefersDarkMode ? "dark" : "light";
 
   useEffect(() => {
     localStorage.setItem("items", JSON.stringify(todoItems));
@@ -58,10 +57,6 @@ function App() {
     setTodoItems((prevTodoItems) =>
       prevTodoItems.filter((item) => item.id !== id)
     );
-  }
-
-  function toggleColorMode() {
-    setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
   }
 
   return (
