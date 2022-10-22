@@ -5,13 +5,19 @@ import AddTodoItemInput from "./AddTodoItemInput/AddTodoItemInput";
 import { getItemsFromCache } from "./utils";
 import { TodoItem } from "./types";
 import { Container } from "@mui/system";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, IconButton } from "@mui/material";
+import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 function App() {
   const [value, setValue] = useState("");
   const [todoItems, setTodoItems] = useState<TodoItem[]>(
     getItemsFromCache() || []
   );
+
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+
+  const mode: "light" | "dark" = prefersDarkMode ? "dark" : "light";
 
   useEffect(() => {
     localStorage.setItem("items", JSON.stringify(todoItems));
@@ -55,29 +61,37 @@ function App() {
 
   return (
     <>
-      <CssBaseline />
-      <Container
-        maxWidth="sm"
-        sx={{
-          pt: 4,
-          pb: 4,
-          display: "flex",
-          flexDirection: "column",
-          rowGap: 2,
-        }}
+      <ThemeProvider
+        theme={createTheme({
+          palette: {
+            mode,
+          },
+        })}
       >
-        <ToDoListHeader />
-        <AddTodoItemInput
-          value={value}
-          onInputChange={setValue}
-          onTodoItemAdd={addTodoItem}
-        />
-        <ToDoList
-          items={todoItems}
-          onToggle={toggleTodoItem}
-          onDelete={deleteTodoItem}
-        />
-      </Container>
+        <CssBaseline />
+        <Container
+          maxWidth="sm"
+          sx={{
+            pt: 4,
+            pb: 4,
+            display: "flex",
+            flexDirection: "column",
+            rowGap: 2,
+          }}
+        >
+          <ToDoListHeader />
+          <AddTodoItemInput
+            value={value}
+            onInputChange={setValue}
+            onTodoItemAdd={addTodoItem}
+          />
+          <ToDoList
+            items={todoItems}
+            onToggle={toggleTodoItem}
+            onDelete={deleteTodoItem}
+          />
+        </Container>
+      </ThemeProvider>
     </>
   );
 }
