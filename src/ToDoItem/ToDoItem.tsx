@@ -27,7 +27,7 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
 }) => {
   return (
     <Draggable draggableId={id.toString()} index={index}>
-      {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
+      {(provided, snapshot) => (
         <Paper
           ref={provided.innerRef}
           {...provided.draggableProps}
