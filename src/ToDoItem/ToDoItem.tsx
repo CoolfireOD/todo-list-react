@@ -1,9 +1,12 @@
-import React from "react";
+import React, { Children } from "react";
 import Checkbox from "@mui/material/Checkbox";
-import { Typography, IconButton, Box, Paper } from "@mui/material";
+import { Typography, IconButton, Box, Paper, Container } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Draggable } from "react-beautiful-dnd";
-import type { DropResult, DraggableChildrenFn } from "react-beautiful-dnd";
+import type {
+  DraggableProvided,
+  DraggableStateSnapshot,
+} from "react-beautiful-dnd";
 
 interface ToDoItemProps {
   id: number;
@@ -24,16 +27,16 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
 }) => {
   return (
     <Draggable draggableId={id.toString()} index={index}>
-      {(provided: any, snapshot: any) => (
+      {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
         <Paper
-          elevation={snapshot.isDragging ? 12 : 1}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          isDragging={snapshot.isDragging}
+          elevation={snapshot.isDragging ? 12 : 1}
           sx={{
-            px: 1,
+            px: 2,
             py: 0.5,
+            mb: "12px",
             display: "flex",
             columnGap: 2,
             alignItems: "center",
@@ -63,7 +66,7 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
                 textAlign: "left",
                 wordBreak: "break-word",
                 position: "relative",
-                textDecoration: completed ? "line-through" : "",
+                textDecoration: completed ? "line-through" : "none",
               }}
             >
               {description}

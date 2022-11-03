@@ -5,7 +5,10 @@ import { Container, Box } from "@mui/material";
 import { Droppable } from "react-beautiful-dnd";
 import { DragDropContext } from "react-beautiful-dnd";
 import { resourceUsage } from "process";
-import type { DroppableProvided } from "react-beautiful-dnd";
+import type {
+  DroppableProvided,
+  DroppableStateSnapshot,
+} from "react-beautiful-dnd";
 
 interface ToDoListProps {
   items: TodoItem[];
@@ -23,7 +26,7 @@ const ToDoList: React.FC<ToDoListProps> = ({
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId={"todo-tasks"}>
-        {(provided: any, snapshot: any) => (
+        {(provided: DroppableProvided) => (
           <Box
             ref={provided.innerRef}
             {...provided.droppableProps}
@@ -31,7 +34,6 @@ const ToDoList: React.FC<ToDoListProps> = ({
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              rowGap: 2,
               width: "100%",
             }}
           >

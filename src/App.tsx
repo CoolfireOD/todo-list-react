@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactEventHandler, useEffect, useState } from "react";
 import ToDoListHeader from "./ToDoListHeader/ToDoListHeader";
 import ToDoList from "./ToDoList/ToDoList";
 import AddTodoItemInput from "./AddTodoItemInput/AddTodoItemInput";
@@ -76,10 +76,12 @@ function App() {
     }
 
     const newTodoItems = Array.from(todoItems);
-    const tmpItem = todoItems[source.index];
+    const draggedItem = todoItems[source.index];
 
+    // delete dragged item from the original array
     newTodoItems.splice(source.index, 1);
-    newTodoItems.splice(destination.index, 0, tmpItem);
+    // insert dragged item on its new place
+    newTodoItems.splice(destination.index, 0, draggedItem);
 
     setTodoItems(newTodoItems);
   }
