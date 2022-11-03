@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactEventHandler, useEffect, useState } from "react";
 import ToDoListHeader from "./ToDoListHeader/ToDoListHeader";
 import ToDoList from "./ToDoList/ToDoList";
 import AddTodoItemInput from "./AddTodoItemInput/AddTodoItemInput";
@@ -8,6 +8,8 @@ import { Container } from "@mui/system";
 import { CssBaseline, IconButton } from "@mui/material";
 import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { isConstructorDeclaration } from "typescript";
+import type { DropResult } from "react-beautiful-dnd";
 
 function App() {
   const [value, setValue] = useState("");
@@ -59,6 +61,31 @@ function App() {
     );
   }
 
+  function onDragEnd(result: DropResult) {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    const newTodoItems = Array.from(todoItems);
+    const draggedItem = todoItems[source.index];
+
+    // delete dragged item from the original array
+    newTodoItems.splice(source.index, 1);
+    // insert dragged item on its new place
+    newTodoItems.splice(destination.index, 0, draggedItem);
+
+    setTodoItems(newTodoItems);
+  }
+
   return (
     <>
       <ThemeProvider
@@ -89,6 +116,7 @@ function App() {
             items={todoItems}
             onToggle={toggleTodoItem}
             onDelete={deleteTodoItem}
+            onDragEnd={onDragEnd}
           />
         </Container>
       </ThemeProvider>
