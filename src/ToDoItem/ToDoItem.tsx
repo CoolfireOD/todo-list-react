@@ -1,12 +1,8 @@
-import React, { Children } from "react";
-import Checkbox from "@mui/material/Checkbox";
-import { Typography, IconButton, Box, Paper, Container } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import React, { useRef, useState } from "react";
+import { Paper } from "@mui/material";
 import { Draggable } from "react-beautiful-dnd";
-import type {
-  DraggableProvided,
-  DraggableStateSnapshot,
-} from "react-beautiful-dnd";
+import ToDoItemContent from "./ToDoItemContent";
+import ToDoDeletedItemContent from "./ToDoDeletedItemContent";
 
 interface ToDoItemProps {
   id: number;
@@ -17,6 +13,8 @@ interface ToDoItemProps {
   onDelete: () => void;
 }
 
+const TIME_TO_AUTO_DELETE_MS = 3000;
+
 const ToDoItem: React.FC<ToDoItemProps> = ({
   id,
   index,
@@ -25,6 +23,26 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
   onToggle,
   onDelete,
 }) => {
+  const [isDeleted, setDeleted] = useState(false);
+  const autoDeleteStartTimeRef = useRef<number>();
+  const intervalIdRef = useRef<ReturnType<typeof setInterval>>();
+
+  function handleDelete() {
+    autoDeleteStartTimeRef.current = Date.now();
+    setDeleted(true);
+
+    intervalIdRef.current = setInterval(() => {
+      if (
+        Date.now() - autoDeleteStartTimeRef.current! <=
+        TIME_TO_AUTO_DELETE_MS
+      )
+        return;
+
+      onDelete();
+      clearInterval(intervalIdRef.current);
+    }, 100);
+  }
+
   return (
     <Draggable draggableId={id.toString()} index={index}>
       {(provided, snapshot) => (
@@ -45,36 +63,24 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
             justifyContent: "space-between",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              columnGap: 1,
-            }}
-          >
-            <Checkbox
-              color="info"
-              checked={completed}
-              onChange={onToggle}
-              sx={{
-                height: "20px",
-                width: "20px",
+          {!isDeleted && (
+            <ToDoItemContent
+              completed={completed}
+              onToggle={onToggle}
+              description={description}
+              onDelete={handleDelete}
+            />
+          )}
+          {isDeleted && (
+            <ToDoDeletedItemContent
+              startTime={autoDeleteStartTimeRef.current!}
+              durationMs={TIME_TO_AUTO_DELETE_MS}
+              onUndo={() => {
+                setDeleted(false);
+                clearInterval(intervalIdRef.current);
               }}
             />
-            <Typography
-              sx={{
-                textAlign: "left",
-                wordBreak: "break-word",
-                position: "relative",
-                textDecoration: completed ? "line-through" : "none",
-              }}
-            >
-              {description}
-            </Typography>
-          </Box>
-          <IconButton onClick={onDelete}>
-            <DeleteIcon />
-          </IconButton>
+          )}
         </Paper>
       )}
     </Draggable>
