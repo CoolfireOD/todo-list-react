@@ -1,3 +1,1 @@
-import ListRoute from "./ListRoute";
-
-export default ListRoute;
+export { ListRoute } from "./ListRoute";

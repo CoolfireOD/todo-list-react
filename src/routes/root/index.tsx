@@ -1,3 +1,1 @@
-import Root from "./root";
-
-export default Root;
+export { RootRoute } from "./RootRoute";

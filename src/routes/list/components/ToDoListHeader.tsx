@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Box from "@mui/material/Box";
-import {
-  Snackbar,
-  IconButton,
-  Tooltip,
-  Button,
-  Typography,
-} from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { IconButton, Snackbar, Typography } from "@mui/material";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { useNavigate } from "react-router-dom";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -25,6 +19,7 @@ type ToDoListHeaderProps = {
 
 const ToDoListHeader: React.FC<ToDoListHeaderProps> = ({ todoListName }) => {
   const [isOpen, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   function handleClick() {
     setOpen(true);
@@ -39,22 +34,6 @@ const ToDoListHeader: React.FC<ToDoListHeaderProps> = ({ todoListName }) => {
     setOpen(false);
   }
 
-  const action = (
-    <React.Fragment>
-      <Button color="secondary" size="small" onClick={handleClose}>
-        UNDO
-      </Button>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </React.Fragment>
-  );
-
   return (
     <Box
       sx={{
@@ -65,7 +44,7 @@ const ToDoListHeader: React.FC<ToDoListHeaderProps> = ({ todoListName }) => {
         columnGap: "2rem",
       }}
     >
-      <IconButton>
+      <IconButton onClick={() => navigate("/")}>
         <ArrowBackIcon />
       </IconButton>
       <Typography component="h1" variant="h4" sx={{ fontWeight: "bold" }}>

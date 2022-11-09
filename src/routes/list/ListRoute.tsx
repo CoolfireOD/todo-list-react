@@ -1,24 +1,17 @@
-import React, { ReactEventHandler, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import ToDoListHeader from "./components/ToDoListHeader";
 import ToDoList from "./components/ToDoList";
 import AddTodoItemInput from "./components/AddTodoItemInput";
 import { getItemsFromCache } from "../../utils";
 import { TodoItem } from "../../types";
-import { Container } from "@mui/system";
-import { CssBaseline, IconButton } from "@mui/material";
-import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { isConstructorDeclaration } from "typescript";
 import type { DropResult } from "react-beautiful-dnd";
+import { Box } from "@mui/material";
 
-function ListRoute() {
+export const ListRoute: FC = () => {
   const [value, setValue] = useState("");
   const [todoItems, setTodoItems] = useState<TodoItem[]>(
     getItemsFromCache() || []
   );
-
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-  const mode: "light" | "dark" = prefersDarkMode ? "dark" : "light";
 
   useEffect(() => {
     localStorage.setItem("items", JSON.stringify(todoItems));
@@ -61,7 +54,7 @@ function ListRoute() {
   }
 
   function onDragEnd(result: DropResult) {
-    const { destination, source, draggableId } = result;
+    const { destination, source } = result;
 
     if (!destination) {
       return;
@@ -86,41 +79,19 @@ function ListRoute() {
   }
 
   return (
-    <>
-      <ThemeProvider
-        theme={createTheme({
-          palette: {
-            mode,
-          },
-        })}
-      >
-        <CssBaseline />
-        <Container
-          maxWidth="sm"
-          sx={{
-            pt: 4,
-            pb: 4,
-            display: "flex",
-            flexDirection: "column",
-            rowGap: 2,
-          }}
-        >
-          <ToDoListHeader todoListName={"My to-do list"} />
-          <AddTodoItemInput
-            value={value}
-            onInputChange={setValue}
-            onTodoItemAdd={addTodoItem}
-          />
-          <ToDoList
-            items={todoItems}
-            onToggle={toggleTodoItem}
-            onDelete={deleteTodoItem}
-            onDragEnd={onDragEnd}
-          />
-        </Container>
-      </ThemeProvider>
-    </>
+    <Box sx={{ display: "flex", rowGap: 3, flexDirection: "column" }}>
+      <ToDoListHeader todoListName={"My to-do list"} />
+      <AddTodoItemInput
+        value={value}
+        onInputChange={setValue}
+        onTodoItemAdd={addTodoItem}
+      />
+      <ToDoList
+        items={todoItems}
+        onToggle={toggleTodoItem}
+        onDelete={deleteTodoItem}
+        onDragEnd={onDragEnd}
+      />
+    </Box>
   );
-}
-
-export default ListRoute;
+};
