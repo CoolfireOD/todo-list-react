@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Box from "@mui/material/Box";
 import {
   Snackbar,
@@ -18,7 +19,11 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const ToDoListHeader: React.FC = () => {
+type ToDoListHeaderProps = {
+  todoListName: string;
+};
+
+const ToDoListHeader: React.FC<ToDoListHeaderProps> = ({ todoListName }) => {
   const [isOpen, setOpen] = useState(false);
 
   function handleClick() {
@@ -60,8 +65,11 @@ const ToDoListHeader: React.FC = () => {
         columnGap: "2rem",
       }}
     >
+      <IconButton>
+        <ArrowBackIcon />
+      </IconButton>
       <Typography component="h1" variant="h4" sx={{ fontWeight: "bold" }}>
-        My to-do list
+        {todoListName}
       </Typography>
       {/*todo: use Snackbar for feedback*/}
       <IconButton onClick={handleClick}>

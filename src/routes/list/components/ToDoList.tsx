@@ -1,6 +1,6 @@
 import React from "react";
-import ToDoItem from "../ToDoItem/ToDoItem";
-import { TodoItem } from "../types";
+import ToDoItem from "./ToDoItem";
+import { TodoItem } from "../../../types";
 import { Container, Box } from "@mui/material";
 import { Droppable } from "react-beautiful-dnd";
 import { DragDropContext } from "react-beautiful-dnd";
