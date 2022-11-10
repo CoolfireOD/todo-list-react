@@ -1,127 +1,39 @@
-import React, { ReactEventHandler, useEffect, useState } from "react";
-import ToDoListHeader from "./ToDoListHeader/ToDoListHeader";
-import ToDoList from "./ToDoList/ToDoList";
-import AddTodoItemInput from "./AddTodoItemInput/AddTodoItemInput";
-import { getItemsFromCache } from "./utils";
-import { TodoItem } from "./types";
-import { Container } from "@mui/system";
-import { CssBaseline, IconButton } from "@mui/material";
-import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
+import React from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { isConstructorDeclaration } from "typescript";
-import type { DropResult } from "react-beautiful-dnd";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
+import { RootRoute } from "./routes/root";
+import { AppContainer } from "./components/AppContainer";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ListRoute } from "./routes/list";
 
-function App() {
-  const [value, setValue] = useState("");
-  const [todoItems, setTodoItems] = useState<TodoItem[]>(
-    getItemsFromCache() || []
-  );
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootRoute />,
+  },
+  {
+    path: "/:id",
+    element: <ListRoute />,
+  },
+]);
 
+export default function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
-
   const mode: "light" | "dark" = prefersDarkMode ? "dark" : "light";
 
-  useEffect(() => {
-    localStorage.setItem("items", JSON.stringify(todoItems));
-  }, [todoItems]);
-
-  function toggleTodoItem(id: number) {
-    setTodoItems((prevTodoItems) =>
-      prevTodoItems.map((item) => {
-        if (item.id === id) item.completed = !item.completed;
-
-        return item;
-      })
-    );
-  }
-
-  function addTodoItem() {
-    if (value.trim() === "") return;
-
-    const hasDuplicate = todoItems.some((item) => item.description === value);
-
-    if (hasDuplicate) {
-      alert(`You can't add task with the same name`);
-      return;
-    }
-
-    const newItem: TodoItem = {
-      id: Date.now(),
-      description: value,
-      completed: false,
-    };
-
-    setTodoItems([...todoItems, newItem]);
-    setValue("");
-  }
-
-  function deleteTodoItem(id: number) {
-    setTodoItems((prevTodoItems) =>
-      prevTodoItems.filter((item) => item.id !== id)
-    );
-  }
-
-  function onDragEnd(result: DropResult) {
-    const { destination, source, draggableId } = result;
-
-    if (!destination) {
-      return;
-    }
-
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
-    }
-
-    const newTodoItems = Array.from(todoItems);
-    const draggedItem = todoItems[source.index];
-
-    // delete dragged item from the original array
-    newTodoItems.splice(source.index, 1);
-    // insert dragged item on its new place
-    newTodoItems.splice(destination.index, 0, draggedItem);
-
-    setTodoItems(newTodoItems);
-  }
-
   return (
-    <>
-      <ThemeProvider
-        theme={createTheme({
-          palette: {
-            mode,
-          },
-        })}
-      >
-        <CssBaseline />
-        <Container
-          maxWidth="sm"
-          sx={{
-            pt: 4,
-            pb: 4,
-            display: "flex",
-            flexDirection: "column",
-            rowGap: 2,
-          }}
-        >
-          <ToDoListHeader />
-          <AddTodoItemInput
-            value={value}
-            onInputChange={setValue}
-            onTodoItemAdd={addTodoItem}
-          />
-          <ToDoList
-            items={todoItems}
-            onToggle={toggleTodoItem}
-            onDelete={deleteTodoItem}
-            onDragEnd={onDragEnd}
-          />
-        </Container>
-      </ThemeProvider>
-    </>
+    <ThemeProvider
+      theme={createTheme({
+        palette: {
+          mode,
+        },
+      })}
+    >
+      <CssBaseline />
+      <AppContainer>
+        <RouterProvider router={router} />
+      </AppContainer>
+    </ThemeProvider>
   );
 }
-
-export default App;
