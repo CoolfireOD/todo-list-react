@@ -2,19 +2,25 @@ import React, { FC, useEffect, useState } from "react";
 import ToDoListHeader from "./components/ToDoListHeader";
 import ToDoList from "./components/ToDoList";
 import AddTodoItemInput from "./components/AddTodoItemInput";
-import { getItemsFromCache } from "../../utils";
-import { TodoItem } from "../../types";
+import { TodoItem, TodoList } from "../../types";
 import type { DropResult } from "react-beautiful-dnd";
 import { Box } from "@mui/material";
+import { BASE_URL } from "../../const";
 
 export const ListRoute: FC = () => {
+  const list: TodoList = { id: "mockId", name: "new list", items: [] };
   const [value, setValue] = useState("");
-  const [todoItems, setTodoItems] = useState<TodoItem[]>(
-    getItemsFromCache() || []
-  );
+  const [todoItems, setTodoItems] = useState<TodoItem[]>(list.items || []);
 
   useEffect(() => {
-    localStorage.setItem("items", JSON.stringify(todoItems));
+    list.items = todoItems;
+    fetch(BASE_URL + `/items`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(list),
+    });
   }, [todoItems]);
 
   function toggleTodoItem(id: number) {
@@ -41,6 +47,7 @@ export const ListRoute: FC = () => {
       id: Date.now(),
       description: value,
       completed: false,
+      listId: list.id,
     };
 
     setTodoItems([...todoItems, newItem]);
@@ -80,7 +87,7 @@ export const ListRoute: FC = () => {
 
   return (
     <Box sx={{ display: "flex", rowGap: 3, flexDirection: "column" }}>
-      <ToDoListHeader todoListName={"My to-do list"} />
+      <ToDoListHeader todoListName={list.name} />
       <AddTodoItemInput
         value={value}
         onInputChange={setValue}

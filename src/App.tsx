@@ -6,15 +6,18 @@ import { RootRoute } from "./routes/root";
 import { AppContainer } from "./components/AppContainer";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ListRoute } from "./routes/list";
+import ErrorPage from "./error-page";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootRoute />,
+    errorElement: <ErrorPage />,
   },
   {
-    path: "/:id",
+    path: "/lists/:id",
     element: <ListRoute />,
+    errorElement: <ErrorPage />,
   },
 ]);
 
