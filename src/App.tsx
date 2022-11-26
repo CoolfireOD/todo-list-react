@@ -1,8 +1,9 @@
 import React from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppContainer } from "./components/AppContainer";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
@@ -22,6 +23,7 @@ export default function App() {
           <RouterProvider router={router} />
         </AppContainer>
       </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

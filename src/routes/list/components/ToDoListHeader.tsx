@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Box from "@mui/material/Box";
-import { IconButton, Snackbar, Typography } from "@mui/material";
+import { IconButton, Skeleton, Snackbar } from "@mui/material";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
+import { ToDoListHeaderTitle } from "./ToDoListHeaderTitle";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -13,11 +14,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-type ToDoListHeaderProps = {
-  todoListName: string;
-};
-
-const ToDoListHeader: React.FC<ToDoListHeaderProps> = ({ todoListName }) => {
+const ToDoListHeader: React.FC = () => {
   const [isOpen, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -47,10 +44,17 @@ const ToDoListHeader: React.FC<ToDoListHeaderProps> = ({ todoListName }) => {
       <IconButton onClick={() => navigate("/")}>
         <ArrowBackIcon />
       </IconButton>
-      <Typography component="h1" variant="h4" sx={{ fontWeight: "bold" }}>
-        {todoListName}
-      </Typography>
-      {/*todo: use Snackbar for feedback*/}
+      <React.Suspense
+        fallback={
+          <Skeleton
+            width={140}
+            variant="text"
+            sx={{ fontSize: "2.125rem", fontWeight: 700, lineHeight: "1.235" }}
+          />
+        }
+      >
+        <ToDoListHeaderTitle />
+      </React.Suspense>
       <IconButton onClick={handleClick}>
         <InsertLinkIcon sx={{ rotate: "-45deg" }} />
       </IconButton>

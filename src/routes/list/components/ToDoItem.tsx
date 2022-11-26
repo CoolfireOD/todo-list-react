@@ -3,14 +3,13 @@ import { Paper } from "@mui/material";
 import { Draggable } from "react-beautiful-dnd";
 import ToDoItemContent from "./ToDoItemContent";
 import ToDoDeletedItemContent from "./ToDoDeletedItemContent";
+import { useTodoItemDeleteMutation } from "../hooks/useTodoItemDeleteMutation";
 
 interface ToDoItemProps {
-  id: number;
+  id: string;
   index: number;
   description: string;
   completed: boolean;
-  onToggle: () => void;
-  onDelete: () => void;
 }
 
 const TIME_TO_AUTO_DELETE_MS = 3000;
@@ -20,12 +19,12 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
   index,
   description,
   completed,
-  onToggle,
-  onDelete,
 }) => {
   const [isDeleted, setDeleted] = useState(false);
   const autoDeleteStartTimeRef = useRef<number>();
   const intervalIdRef = useRef<ReturnType<typeof setInterval>>();
+
+  const { mutate: deleteItem } = useTodoItemDeleteMutation();
 
   function handleDelete() {
     autoDeleteStartTimeRef.current = Date.now();
@@ -38,7 +37,7 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
       )
         return;
 
-      onDelete();
+      deleteItem(id);
       clearInterval(intervalIdRef.current);
     }, 100);
   }
@@ -66,7 +65,7 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
           {!isDeleted && (
             <ToDoItemContent
               completed={completed}
-              onToggle={onToggle}
+              todoItemId={id}
               description={description}
               onDelete={handleDelete}
             />

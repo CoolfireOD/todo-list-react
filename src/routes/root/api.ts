@@ -1,4 +1,4 @@
-import { get } from "../../utils/requests";
+import { get, post } from "../../utils/requests";
 import { API_DOMAIN } from "../../const";
 import { TodoList } from "../../types";
 
@@ -7,6 +7,12 @@ type ResponseData = Array<Omit<TodoList, "items">>;
 
 export const getLists = async () => {
   const { data } = await get<ResponseData>(url);
+
+  return data;
+};
+
+export const postList = async (list: Pick<TodoList, "name">) => {
+  const { data } = await post<TodoList>(url, list);
 
   return data;
 };
