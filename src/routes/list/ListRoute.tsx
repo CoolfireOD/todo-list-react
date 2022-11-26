@@ -5,7 +5,7 @@ import AddTodoItemInput from "./components/AddTodoItemInput";
 import { TodoItem, TodoList } from "../../types";
 import type { DropResult } from "react-beautiful-dnd";
 import { Box } from "@mui/material";
-import { BASE_URL } from "../../const";
+import { API_DOMAIN } from "../../const";
 
 export const ListRoute: FC = () => {
   const list: TodoList = { id: "mockId", name: "new list", items: [] };
@@ -14,7 +14,7 @@ export const ListRoute: FC = () => {
 
   useEffect(() => {
     list.items = todoItems;
-    fetch(BASE_URL + `/items`, {
+    fetch(API_DOMAIN + `/items`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
