@@ -10,7 +10,7 @@ export const CreateListInput: FC = () => {
 
   const [value, setValue] = useState("");
 
-  const { mutate: postList } = useMutation(API.postList, {
+  const { mutate: postList, isLoading } = useMutation(API.postList, {
     onSuccess: (newList) => {
       queryClient.setQueryData(
         ["items", { listId: newList.id }],
@@ -27,7 +27,7 @@ export const CreateListInput: FC = () => {
   const handleSubmit: FormEventHandler = async (e) => {
     e.preventDefault();
 
-    if (value.trim() === "") throw new Error();
+    if (value.trim() === "") return;
 
     const list = { name: value };
 
@@ -37,6 +37,7 @@ export const CreateListInput: FC = () => {
   return (
     <form onSubmit={handleSubmit}>
       <TextField
+        disabled={isLoading}
         placeholder="Fill in and press enter"
         label="List name"
         variant="standard"
