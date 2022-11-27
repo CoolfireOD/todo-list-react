@@ -13,7 +13,9 @@ const ToDoList: React.FC = () => {
   const listId = useIdParam();
   const queryKey = getTodosQueryKey({ listId });
 
-  const { data: todoItems } = useQuery(queryKey, () => API.getTodos(listId));
+  const { data: todoItems } = useQuery(queryKey, () => API.getTodos(listId), {
+    suspense: true,
+  });
   const { mutate: reorderTodos } = useReorderItemsMutation();
 
   const handleDragEnd = (result: DropResult) => {
