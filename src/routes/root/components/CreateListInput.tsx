@@ -1,5 +1,5 @@
 import React, { FC, FormEventHandler, useState } from "react";
-import { TextField } from "@mui/material";
+import { TextField, Box, LinearProgress } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as API from "../api";
 import { useNavigate } from "react-router-dom";
@@ -35,16 +35,32 @@ export const CreateListInput: FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <TextField
-        disabled={isLoading}
-        placeholder="Fill in and press enter"
-        label="List name"
-        variant="standard"
-        inputProps={{ maxLength: 64 }}
-        fullWidth
-        onChange={handleChange}
-      />
-    </form>
+    <>
+      <Box
+        sx={{
+          width: "100%",
+          position: "absolute",
+          top: 0,
+          left: 0,
+        }}
+      >
+        <LinearProgress
+          sx={{
+            display: isLoading ? "block" : "none",
+          }}
+        />
+      </Box>
+      <form onSubmit={handleSubmit}>
+        <TextField
+          disabled={isLoading}
+          placeholder="Fill in and press enter"
+          label="List name"
+          variant="standard"
+          inputProps={{ maxLength: 64 }}
+          fullWidth
+          onChange={handleChange}
+        />
+      </form>
+    </>
   );
 };
