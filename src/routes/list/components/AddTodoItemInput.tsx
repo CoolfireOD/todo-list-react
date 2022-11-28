@@ -1,5 +1,5 @@
 import React, { FormEventHandler, useState } from "react";
-import { TextField, Box, LinearProgress } from "@mui/material";
+import { TextField } from "@mui/material";
 import { useIdParam } from "../../../hooks/useIdParam";
 import { usePostTodoMutation } from "../hooks/usePostTodoMutation";
 
@@ -30,20 +30,6 @@ const AddTodoItemInput: React.FC = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          width: "100%",
-          position: "absolute",
-          top: 0,
-          left: 0,
-        }}
-      >
-        <LinearProgress
-          sx={{
-            display: isLoading ? "block" : "none",
-          }}
-        />
-      </Box>
       <form onSubmit={handleSubmit}>
         <TextField
           disabled={isLoading}
