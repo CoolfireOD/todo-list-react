@@ -3,14 +3,18 @@ import { TextField } from "@mui/material";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as API from "../api";
 import { useNavigate } from "react-router-dom";
+import { useProgressBar } from "../../../components/ProgressBarProvider";
 
 export const CreateListInput: FC = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
+  const { start, finish } = useProgressBar();
+
   const [value, setValue] = useState("");
 
   const { mutate: postList, isLoading } = useMutation(API.postList, {
+    onMutate: start,
     onSuccess: (newList) => {
       queryClient.setQueryData(
         ["items", { listId: newList.id }],
@@ -18,6 +22,7 @@ export const CreateListInput: FC = () => {
       );
       navigate(`/lists/${newList.id}`); //todo: store routes in const
     },
+    onSettled: finish,
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
