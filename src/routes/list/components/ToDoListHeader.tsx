@@ -1,34 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Box from "@mui/material/Box";
-import { IconButton, Skeleton, Snackbar } from "@mui/material";
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { IconButton, Skeleton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { ToDoListHeaderTitle } from "./ToDoListHeaderTitle";
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref
-) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+import { useNotifications } from "../../../components/NotificationsProvider";
 
 const ToDoListHeader: React.FC = () => {
-  const [isOpen, setOpen] = useState(false);
   const navigate = useNavigate();
+  const { push } = useNotifications();
 
   function handleClick() {
-    setOpen(true);
+    push({
+      message: "URL is copied to clipboard!",
+      type: "success",
+      horizontal: "right",
+      delay: 3000,
+    });
     navigator.clipboard.writeText(window.location.href);
-  }
-
-  function handleClose(event: React.SyntheticEvent | Event, reason?: string) {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
   }
 
   return (
@@ -58,16 +48,6 @@ const ToDoListHeader: React.FC = () => {
       <IconButton onClick={handleClick}>
         <InsertLinkIcon sx={{ rotate: "-45deg" }} />
       </IconButton>
-      <Snackbar
-        open={isOpen}
-        autoHideDuration={3000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          URL is copied to clipboard!
-        </Alert>
-      </Snackbar>
     </Box>
   );
 };

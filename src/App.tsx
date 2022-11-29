@@ -9,6 +9,7 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
 import { getTheme } from "./theme";
 import { ProgressBarProvider } from "./components/ProgressBarProvider";
+import { NotificationsProvider } from "./components/NotificationsProvider";
 
 const queryClient = new QueryClient();
 
@@ -20,11 +21,13 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={createTheme(getTheme(mode))}>
         <CssBaseline />
-        <ProgressBarProvider>
-          <AppContainer>
-            <RouterProvider router={router} />
-          </AppContainer>
-        </ProgressBarProvider>
+        <NotificationsProvider>
+          <ProgressBarProvider>
+            <AppContainer>
+              <RouterProvider router={router} />
+            </AppContainer>
+          </ProgressBarProvider>
+        </NotificationsProvider>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
