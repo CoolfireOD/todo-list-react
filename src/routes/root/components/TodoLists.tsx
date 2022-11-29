@@ -1,11 +1,9 @@
 import React, { FC } from "react";
-import Link from "@mui/material/Link";
 import { TodoListsLayout } from "./TodoListsLayout";
-import { TodoListsItemWrapper } from "./TodoListsItemWrapper";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-
 import * as API from "../api";
 import { getListQueryKey } from "../../../utils/getListQueryKey";
+import { ToDoListsItem } from "./TodoListsItem";
 
 export const TodoLists: FC = () => {
   const queryClient = useQueryClient();
@@ -24,9 +22,7 @@ export const TodoLists: FC = () => {
   return (
     <TodoListsLayout>
       {listItems?.map((list) => (
-        <TodoListsItemWrapper key={list.id}>
-          <Link href={`/lists/${list.id}`}>{list.name}</Link>
-        </TodoListsItemWrapper>
+        <ToDoListsItem key={list.id} id={list.id} description={list.name} />
       ))}
     </TodoListsLayout>
   );

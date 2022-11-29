@@ -1,16 +1,18 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
 
-type ToDoDeletedItemContentProps = {
+type UndoContentProps = {
   startTime: number;
   durationMs: number;
+  description: string;
   onUndo: () => void;
 };
 
-const ToDoDeletedItemContent: FC<ToDoDeletedItemContentProps> = ({
+const UndoContent: FC<UndoContentProps> = ({
   onUndo,
   startTime,
   durationMs,
+  description,
 }) => {
   // progress for deleted item to disappear in %
   const [countdown, setCountdown] = useState(100);
@@ -78,7 +80,7 @@ const ToDoDeletedItemContent: FC<ToDoDeletedItemContentProps> = ({
             </Typography>
           </Box>
         </Box>
-        <Typography>Task has been deleted</Typography>
+        <Typography>{description}</Typography>
       </Box>
       <Box>
         <Button color="secondary" size="small" onClick={onUndo}>
@@ -89,4 +91,4 @@ const ToDoDeletedItemContent: FC<ToDoDeletedItemContentProps> = ({
   );
 };
 
-export default ToDoDeletedItemContent;
+export default UndoContent;

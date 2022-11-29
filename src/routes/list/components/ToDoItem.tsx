@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Paper } from "@mui/material";
 import { Draggable } from "react-beautiful-dnd";
 import ToDoItemContent from "./ToDoItemContent";
-import ToDoDeletedItemContent from "./ToDoDeletedItemContent";
+import UndoContent from "../../../components/UndoContent";
 import { useTodoItemDeleteMutation } from "../hooks/useTodoItemDeleteMutation";
 
 interface ToDoItemProps {
@@ -71,13 +71,14 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
             />
           )}
           {isDeleted && (
-            <ToDoDeletedItemContent
+            <UndoContent
               startTime={autoDeleteStartTimeRef.current!}
               durationMs={TIME_TO_AUTO_DELETE_MS}
               onUndo={() => {
                 setDeleted(false);
                 clearInterval(intervalIdRef.current);
               }}
+              description={"Task has been deleted"}
             />
           )}
         </Paper>
