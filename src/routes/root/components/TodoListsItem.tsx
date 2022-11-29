@@ -1,60 +1,47 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { useListDeleteMutation } from "../hooks/useListDeleteMutation";
 import { Link, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { TodoListsItemWrapper } from "./TodoListsItemWrapper";
-import ToDoDeletedItemContent from "../../../components/UndoContent";
+import UndoContent from "../../../components/UndoContent";
+import { useCountdown } from "../../../hooks/useCountdown";
 
 interface ToDoListsItemProps {
   id: string;
   description: string;
 }
 
-const TIME_TO_AUTO_DELETE_MS = 3000;
-
 export const ToDoListsItem: React.FC<ToDoListsItemProps> = ({
   id,
   description,
 }) => {
-  const [isDeleted, setDeleted] = useState(false);
-  const autoDeleteStartTimeRef = useRef<number>();
-  const intervalIdRef = useRef<ReturnType<typeof setInterval>>();
-
   const { mutate: deleteList } = useListDeleteMutation();
+  const { start, cancel, seconds, percents } = useCountdown({
+    action: () => deleteList(id),
+  });
 
-  function handleDelete(listId: string) {
-    autoDeleteStartTimeRef.current = Date.now();
-    setDeleted(true);
-
-    intervalIdRef.current = setInterval(() => {
-      if (
-        Date.now() - autoDeleteStartTimeRef.current! <=
-        TIME_TO_AUTO_DELETE_MS
-      )
-        return;
-
-      deleteList(listId);
-      clearInterval(intervalIdRef.current);
-    }, 100);
+  function handleDelete() {
+    start();
   }
+
+  const isCountdownPending = seconds !== null && percents !== null;
 
   return (
     <TodoListsItemWrapper key={id}>
-      {!isDeleted && (
+      {!isCountdownPending && (
         <>
           <Link href={`/lists/${id}`}>{description}</Link>
-          <IconButton onClick={() => handleDelete(id)}>
+          <IconButton onClick={() => handleDelete()}>
             <DeleteIcon />
           </IconButton>
         </>
       )}
-      {isDeleted && (
-        <ToDoDeletedItemContent
-          startTime={autoDeleteStartTimeRef.current!}
-          durationMs={TIME_TO_AUTO_DELETE_MS}
+      {isCountdownPending && (
+        <UndoContent
+          seconds={seconds}
+          percents={percents}
           onUndo={() => {
-            setDeleted(false);
-            clearInterval(intervalIdRef.current);
+            cancel();
           }}
           description={"List has been deleted"}
         />

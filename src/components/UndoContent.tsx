@@ -1,44 +1,19 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC } from "react";
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
 
 type UndoContentProps = {
-  startTime: number;
-  durationMs: number;
+  seconds: number;
+  percents: number;
   description: string;
   onUndo: () => void;
 };
 
 const UndoContent: FC<UndoContentProps> = ({
   onUndo,
-  startTime,
-  durationMs,
   description,
+  seconds,
+  percents,
 }) => {
-  // progress for deleted item to disappear in %
-  const [countdown, setCountdown] = useState(100);
-  const timerRef = useRef<number>();
-
-  useEffect(() => {
-    timerRef.current = Date.now();
-
-    const finalTime = startTime + durationMs;
-
-    const timer = setInterval(() => {
-      const currentTime = Date.now();
-      const percent = Math.round(
-        (finalTime - currentTime) / (durationMs / 100)
-      );
-
-      if (percent >= 0) {
-        setCountdown(percent);
-      }
-    }, 20);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
-
   return (
     <React.Fragment>
       <Box
@@ -51,7 +26,7 @@ const UndoContent: FC<UndoContentProps> = ({
         <Box sx={{ position: "relative", display: "inline-flex" }}>
           <CircularProgress
             variant="determinate"
-            value={countdown}
+            value={percents}
             sx={{
               transition: "none",
               "& .MuiCircularProgress-circle": {
@@ -76,7 +51,7 @@ const UndoContent: FC<UndoContentProps> = ({
               component="div"
               color="text.secondary"
             >
-              {Math.ceil(countdown / 33)}
+              {seconds}
             </Typography>
           </Box>
         </Box>
