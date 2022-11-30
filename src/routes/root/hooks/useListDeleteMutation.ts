@@ -1,11 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { LISTS_QUERY_KEY } from "../../../const";
 import { TodoList } from "../../../types";
 import * as API from "../api";
+import { LISTS_QUERY_KEY } from "../const";
 
 export const useListDeleteMutation = () => {
   const queryClient = useQueryClient();
-  const queryKey = LISTS_QUERY_KEY;
 
   return useMutation<
     void,
@@ -14,20 +13,24 @@ export const useListDeleteMutation = () => {
     { previousLists: TodoList[] | undefined }
   >(API.deleteList, {
     onMutate: async (deleteId) => {
-      await queryClient.cancelQueries({ queryKey });
-      const previousLists = queryClient.getQueryData<TodoList[]>(queryKey);
+      await queryClient.cancelQueries({ queryKey: LISTS_QUERY_KEY });
+      const previousLists =
+        queryClient.getQueryData<TodoList[]>(LISTS_QUERY_KEY);
 
-      queryClient.setQueryData<TodoList[]>(queryKey, (previousLists) => {
+      queryClient.setQueryData<TodoList[]>(LISTS_QUERY_KEY, (previousLists) => {
         return previousLists!.filter((previous) => previous.id !== deleteId);
       });
 
       return { previousLists };
     },
     onError: (err, newList, context) => {
-      queryClient.setQueryData<TodoList[]>(queryKey, context!.previousLists);
+      queryClient.setQueryData<TodoList[]>(
+        LISTS_QUERY_KEY,
+        context!.previousLists
+      );
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey });
+      queryClient.invalidateQueries({ queryKey: LISTS_QUERY_KEY });
     },
   });
 };

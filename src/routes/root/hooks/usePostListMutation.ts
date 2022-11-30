@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useProgressBar } from "../../../components/ProgressBarProvider";
-import { LISTS_QUERY_KEY } from "../../../const";
 import { TodoList } from "../../../types";
 import * as API from "../api";
 import { getTodosQueryKey } from "../../list/utils";
+import { LISTS_QUERY_KEY } from "../const";
 
 export const usePostListMutation = (onSuccess?: () => void) => {
   const queryClient = useQueryClient();

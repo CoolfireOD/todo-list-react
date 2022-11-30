@@ -40,9 +40,7 @@ export const ToDoListsItem: React.FC<ToDoListsItemProps> = ({
         <UndoContent
           seconds={seconds}
           percents={percents}
-          onUndo={() => {
-            cancel();
-          }}
+          onUndo={cancel}
           description={"List has been deleted"}
         />
       )}
