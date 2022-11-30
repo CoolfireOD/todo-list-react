@@ -1,9 +1,10 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { Paper } from "@mui/material";
 import { Draggable } from "react-beautiful-dnd";
 import ToDoItemContent from "./ToDoItemContent";
-import ToDoDeletedItemContent from "./ToDoDeletedItemContent";
+import UndoContent from "../../../components/UndoContent";
 import { useTodoItemDeleteMutation } from "../hooks/useTodoItemDeleteMutation";
+import { useCountdown } from "../../../hooks/useCountdown";
 
 interface ToDoItemProps {
   id: string;
@@ -12,35 +13,23 @@ interface ToDoItemProps {
   completed: boolean;
 }
 
-const TIME_TO_AUTO_DELETE_MS = 3000;
-
 const ToDoItem: React.FC<ToDoItemProps> = ({
   id,
   index,
   description,
   completed,
 }) => {
-  const [isDeleted, setDeleted] = useState(false);
-  const autoDeleteStartTimeRef = useRef<number>();
-  const intervalIdRef = useRef<ReturnType<typeof setInterval>>();
-
   const { mutate: deleteItem } = useTodoItemDeleteMutation();
 
+  const { start, cancel, seconds, percents } = useCountdown({
+    action: () => deleteItem(id),
+  });
+
   function handleDelete() {
-    autoDeleteStartTimeRef.current = Date.now();
-    setDeleted(true);
-
-    intervalIdRef.current = setInterval(() => {
-      if (
-        Date.now() - autoDeleteStartTimeRef.current! <=
-        TIME_TO_AUTO_DELETE_MS
-      )
-        return;
-
-      deleteItem(id);
-      clearInterval(intervalIdRef.current);
-    }, 100);
+    start();
   }
+
+  const isCountdownPending = seconds !== null && percents !== null;
 
   return (
     <Draggable draggableId={id.toString()} index={index}>
@@ -62,7 +51,7 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
             justifyContent: "space-between",
           }}
         >
-          {!isDeleted && (
+          {!isCountdownPending && (
             <ToDoItemContent
               completed={completed}
               todoItemId={id}
@@ -70,14 +59,12 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
               onDelete={handleDelete}
             />
           )}
-          {isDeleted && (
-            <ToDoDeletedItemContent
-              startTime={autoDeleteStartTimeRef.current!}
-              durationMs={TIME_TO_AUTO_DELETE_MS}
-              onUndo={() => {
-                setDeleted(false);
-                clearInterval(intervalIdRef.current);
-              }}
+          {isCountdownPending && (
+            <UndoContent
+              seconds={seconds}
+              percents={percents}
+              onUndo={cancel}
+              description={"Task has been deleted"}
             />
           )}
         </Paper>

@@ -1,4 +1,4 @@
-import { get, post } from "../../utils/requests";
+import { get, post, remove } from "../../utils/requests";
 import { API_DOMAIN } from "../../const";
 import { TodoList } from "../../types";
 
@@ -15,4 +15,8 @@ export const postList = async (list: Pick<TodoList, "name">) => {
   const { data } = await post<TodoList>(url, list);
 
   return data;
+};
+
+export const deleteList = async (listId: string) => {
+  await remove(`${url}/${listId}`);
 };
