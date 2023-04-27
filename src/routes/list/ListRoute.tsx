@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import ToDoListHeader from "./components/ToDoListHeader";
 import ToDoList from "./components/ToDoList";
-import AddToDoItemInput from "./components/AddToDoItemInput";
+import AddToDoItemInput from "./components/AddTodoItemInput";
 import { Box } from "@mui/material";
 import { ToDoItemsSkeleton } from "./components/ToDoItemsSkeleton";
 

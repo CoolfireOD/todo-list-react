@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Skeleton } from "@mui/material";
-import { ToDoItemWrapper } from "./ToDoItemWrapper";
-import { ToDoItemsLayout } from "./ToDoItemsLayout";
+import { ToDoItemWrapper } from "./TodoItemWrapper";
+import { ToDoItemsLayout } from "./TodoItemsLayout";
 
 const keysArray = Array.from(Array(4).keys());
 
