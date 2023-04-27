@@ -1,11 +1,11 @@
 import React, { FC, ReactNode } from "react";
 import { Paper } from "@mui/material";
 
-type TodoItemWrapperProps = {
+type ToDoItemWrapperProps = {
   children: ReactNode;
 };
 
-export const TodoItemWrapper: FC<TodoItemWrapperProps> = ({ children }) => {
+export const ToDoItemWrapper: FC<ToDoItemWrapperProps> = ({ children }) => {
   return (
     <Paper
       sx={{

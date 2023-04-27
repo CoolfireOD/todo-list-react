@@ -3,7 +3,7 @@ import { TextField } from "@mui/material";
 import { useIdParam } from "../../../hooks/useIdParam";
 import { usePostTodoMutation } from "../hooks/usePostTodoMutation";
 
-const AddTodoItemInput: React.FC = () => {
+const AddToDoItemInput: React.FC = () => {
   const listId = useIdParam();
 
   const [value, setValue] = useState("");
@@ -46,4 +46,4 @@ const AddTodoItemInput: React.FC = () => {
   );
 };
 
-export default AddTodoItemInput;
+export default AddToDoItemInput;

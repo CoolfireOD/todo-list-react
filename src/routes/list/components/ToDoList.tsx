@@ -40,8 +40,10 @@ const ToDoList: React.FC = () => {
     // insert dragged item on its new place
     newTodoItems.splice(destination.index, 0, draggedItem);
 
+    const itemIds = newTodoItems.map((item) => item.id);
+
     reorderTodos({
-      items: newTodoItems,
+      itemIds,
       listId,
     });
   };

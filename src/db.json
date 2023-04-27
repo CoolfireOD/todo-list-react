@@ -1,0 +1,50 @@
+{
+  "lists": [
+    {
+      "id": 1,
+      "name": "To Do List 1"
+    },
+    {
+      "id": 2,
+      "name": "To Do List 2"
+    }
+  ],
+  "items": [
+    {
+      "id": 1,
+      "description": "Item 1",
+      "completed": true,
+      "listId": 1
+    },
+    {
+      "id": 2,
+      "description": "Item 2",
+      "completed": false,
+      "listId": 1
+    },
+    {
+      "id": 3,
+      "description": "Item 3",
+      "completed": true,
+      "listId": 1
+    },
+    {
+      "id": 4,
+      "description": "Item 4",
+      "completed": false,
+      "listId": 2
+    },
+    {
+      "id": 5,
+      "description": "Item 5",
+      "completed": true,
+      "listId": 2
+    },
+    {
+      "id": 6,
+      "description": "Item 6",
+      "completed": false,
+      "listId": 2
+    }
+  ]
+}

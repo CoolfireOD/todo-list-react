@@ -1,18 +1,18 @@
 import React, { FC } from "react";
 import { Skeleton } from "@mui/material";
-import { TodoItemWrapper } from "./TodoItemWrapper";
-import { TodoItemsLayout } from "./TodoItemsLayout";
+import { ToDoItemWrapper } from "./ToDoItemWrapper";
+import { ToDoItemsLayout } from "./ToDoItemsLayout";
 
 const keysArray = Array.from(Array(4).keys());
 
 export const ToDoItemsSkeleton: FC = () => {
   return (
-    <TodoItemsLayout>
+    <ToDoItemsLayout>
       {keysArray.map((key) => (
-        <TodoItemWrapper key={key}>
+        <ToDoItemWrapper key={key}>
           <Skeleton sx={{ width: "100%" }} />
-        </TodoItemWrapper>
+        </ToDoItemWrapper>
       ))}
-    </TodoItemsLayout>
+    </ToDoItemsLayout>
   );
 };

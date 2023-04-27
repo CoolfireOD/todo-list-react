@@ -1,11 +1,11 @@
 import React, { FC, ReactNode } from "react";
 import { Box } from "@mui/material";
 
-type TodoItemsLayoutProps = {
+type ToDoItemsLayoutProps = {
   children: ReactNode;
 };
 
-export const TodoItemsLayout: FC<TodoItemsLayoutProps> = ({ children }) => {
+export const ToDoItemsLayout: FC<ToDoItemsLayoutProps> = ({ children }) => {
   return (
     <Box
       sx={{

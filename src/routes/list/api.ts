@@ -33,14 +33,11 @@ export const deleteTodo = async (itemId: string) => {
   await remove(`${itemsUrl}/${itemId}`);
 };
 
-export const reorderTodos = async ({
-  items,
-  listId,
-}: {
-  items: TodoItem[];
+export const reorderTodos = async (reorderData: {
+  itemIds: string[];
   listId: string;
 }) => {
-  const { data } = await put<TodoItem[]>(`${itemsUrl}?listId=${listId}`, items);
+  const { data } = await put<TodoItem[]>(itemsUrl + "/reorder", reorderData);
 
   return data;
 };

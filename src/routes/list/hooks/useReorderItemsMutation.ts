@@ -15,13 +15,22 @@ export const useReorderItemsMutation = () => {
   return useMutation<
     TodoItem[],
     unknown,
-    { items: TodoItem[]; listId: string },
+    { itemIds: string[]; listId: string },
     { previousTodos: TodoItem[] | undefined }
   >(API.reorderTodos, {
-    onMutate: async ({ items: newItems }) => {
+    onMutate: async ({ itemIds }) => {
       await queryClient.cancelQueries({ queryKey });
 
       const previousTodos = queryClient.getQueryData<TodoItem[]>(queryKey);
+
+      const newItems = itemIds.map((id) => {
+        const todo = previousTodos?.find((todo) => todo.id === id);
+
+        if (!todo)
+          throw new Error("Could not map previous todos to reordered ids");
+
+        return todo;
+      });
 
       queryClient.setQueryData<TodoItem[]>(queryKey, () => newItems);
 
